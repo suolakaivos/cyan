@@ -1,0 +1,51 @@
+
+
+// Siirrä 32-bittinen numero "0x1" osoitteeseen 0x40927410
+// word = 16bit ja dword = "double word" eli dword = 32bit
+
+0bcaffac  mov dword [0x40927410], 0x1
+
+// Muuttaa 64-bittisen desimaaliluvun 64-bittiseksi kokonailuvuksi
+// "with truncation", eli ne bitit joita ei esitetä kokonaisluvussa potkitaan pellolle?
+// ebp = 32-bittinen rekisteri? rdx on rekisteri, jonne assembly -functiota kutsuttaessa
+// tallennetaan kokonaisluvut?
+
+0bcaffb7  cvttsd2si ebp, [rdx+0x8]
+
+// Vertaa 32-bittista arvoa osoitteessa rdx+0x4 literaalilukuun 4294901759???
+// MIKSI VERRATAAN TUOHON LUKUUN JA MITÄ ON OSOITTEESSA rdx+0x4?!?!?!?
+
+0bcaffbc  cmp dword [rdx+0x4], 0xfffeffff
+
+// JUMP IF NOT BELOW? Onko 0x0bca0010 pointteri vai arvo? 197787664
+
+0bcaffc3  jnb 0x0bca0010	->0
+
+// Bitwise or arvoilla xmm7 ja xmm7?!?!
+// 32-bittisiä desimaalilukuja tallentaan tänne? SSE!?
+// MITÄ NOISSA ON!?!?
+
+0bcaffc9  xorps xmm7, xmm7
+
+// Muuttaa 64-bittisen desimaaliluvun 64-bittiseksi kokonailuvuksi
+// "with truncation", eli ne bitit joita ei esitetä kokonaisluvussa potkitaan pellolle?
+
+0bcaffcc  cvtsi2sd xmm7, ebp
+
+
+0bcaffd0  addsd xmm7, [rdx]
+
+0bcaffd4  add ebp, +0x01
+0bcaffd7  cmp ebp, +0x64
+0bcaffda  jg 0x0bca0014	->1
+
+
+->LOOP:
+0bcaffe0  xorps xmm6, xmm6
+0bcaffe3  cvtsi2sd xmm6, ebp
+0bcaffe7  addsd xmm7, xmm6
+0bcaffeb  add ebp, +0x01
+0bcaffee  cmp ebp, +0x64
+0bcafff1  jle 0x0bcaffe0	->LOOP
+0bcafff3  jmp 0x0bca001c	->3
+---- TRACE 1 stop -> loop
